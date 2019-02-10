@@ -41,3 +41,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: freenas-nfs-provisioner
+  namespace: kube-system
