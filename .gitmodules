@@ -1,3 +1,0 @@
-[submodule "jackett"]
-	path = jackett
-	url = git@github.com:halkeye-helm-charts/jackett-chart.git
