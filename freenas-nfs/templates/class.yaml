@@ -17,7 +17,7 @@ parameters:
 
   # name of the secret which contains FreeNAS server connection details
   # default: freenas-nfs
-  #serverSecretName:
+  serverSecretName: {{ .Values.provisioner.serverSecretName }}
 
   # the name of the parent dataset (or simply pool) where all resources will
   # be created, it *must* exist before provisioner will work

@@ -14,6 +14,7 @@ fullnameOverride: ""
 
 provisioner:
   datasetParentName: pool1/k8s
+  serverSecretName: freenas-nfs-values
 
 
 nodeSelector: {}
