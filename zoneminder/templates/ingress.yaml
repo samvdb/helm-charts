@@ -5,15 +5,15 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
-labels:
-  app.kubernetes.io/name: {{ include "zoneminder.name" . }}
-  helm.sh/chart: {{ include "zoneminder.chart" . }}
-  app.kubernetes.io/instance: {{ .Release.Name }}
-  app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- with .Values.ingress.annotations }}
-annotations:
-  {{ toYaml . | indent 4 }}
-{{- end }}
+  labels:
+    app.kubernetes.io/name: {{ include "zoneminder.name" . }}
+    helm.sh/chart: {{ include "zoneminder.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{ toYaml . | indent 4 }}
+  {{- end }}
 spec:
 {{- if .Values.ingress.tls }}
   tls:
