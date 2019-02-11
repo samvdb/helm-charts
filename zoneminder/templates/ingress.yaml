@@ -23,7 +23,7 @@ spec:
     - {{ . | quote }}
     {{- end }}
     secretName: {{ .secretName }}
-{{- end }}
+  {{- end }}
 {{- end }}
   rules:
   {{- range .Values.ingress.hosts }}
@@ -31,8 +31,8 @@ spec:
     http:
       paths:
       - path: {{ $ingressPath }}
-      backend:
-        serviceName: {{ $fullName }}
-        servicePort: http
+        backend:
+          serviceName: {{ $fullName }}
+          servicePort: http
   {{- end }}
 {{- end }}
