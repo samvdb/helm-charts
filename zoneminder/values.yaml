@@ -19,6 +19,7 @@ service:
 uid: 1000
 gid: 1000
 tz: UTC
+
 db:
   password: ""
   rootPassword: ""

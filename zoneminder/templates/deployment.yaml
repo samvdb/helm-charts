@@ -41,11 +41,11 @@ spec:
             port: http
         env:
         - name: TZ
-          value: "{{ .Values.timezone }}"
+          value: "{{ .Values.tz }}"
         - name: PUID
-          value: "{{ .Values.puid }}"
+          value: "{{ .Values.uid }}"
         - name: PGID
-          value: "{{ .Values.pgid }}"
+          value: "{{ .Values.gid }}"
         - name: ZM_DB_HOST
           value: "{{ .Values.db.host }}"
         - name: MYSQL_DATABASE
