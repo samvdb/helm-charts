@@ -21,7 +21,7 @@ spec:
     spec:
       hostNetwork: true
       containers:
-        - name: {{ .Chart.Name }}
+      - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         securityContext:
