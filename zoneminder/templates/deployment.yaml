@@ -19,8 +19,9 @@ spec:
         app.kubernetes.io/name: {{ include "zoneminder.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      hostNetwork: true
       containers:
-      - name: {{ .Chart.Name }}
+        - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         securityContext:
