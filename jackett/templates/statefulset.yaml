@@ -31,10 +31,14 @@ spec:
             httpGet:
               path: /
               port: http
+            initialDelaySeconds: 15
+            failureThreshold: 10
           readinessProbe:
             httpGet:
               path: /
               port: http
+            initialDelaySeconds: 15
+            failureThreshold: 10
           env:
             - name: TZ
               value: "{{ .Values.timezone }}"
