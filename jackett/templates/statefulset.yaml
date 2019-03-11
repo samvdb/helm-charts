@@ -28,17 +28,15 @@ spec:
               containerPort: 9117
               protocol: TCP
           livenessProbe:
-            httpGet:
-              path: /
+            tcpSocket:
               port: http
             initialDelaySeconds: 15
-            failureThreshold: 10
+            periodSeconds: 5
           readinessProbe:
-            httpGet:
-              path: /
+            tcpSocket:
               port: http
             initialDelaySeconds: 15
-            failureThreshold: 10
+            periodSeconds: 5
           env:
             - name: TZ
               value: "{{ .Values.timezone }}"
