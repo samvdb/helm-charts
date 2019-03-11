@@ -73,10 +73,7 @@ spec:
           {{- if .Values.persistence.backups.subPath }}
           subPath: {{ .Values.persistence.backups.subPath }}
           {{- end }}
-  {{- if .Values.nodeSelector }}
-      nodeSelector:
-    {{ toYaml .Values.nodeSelector | indent 8 }}
-    {{- end }}
+
       volumes:
       - name: shm
         emptyDir:
@@ -102,3 +99,7 @@ spec:
           {{- else }}
           emptyDir: {}
           {{- end }}
+{{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+{{- end }}
