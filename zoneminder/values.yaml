@@ -23,9 +23,9 @@ tz: UTC
 db:
   password: ""
   rootPassword: ""
-  user: ""
+  user: "zm"
   host: ""
-  name: ""
+  name: "zm"
 
 ingress:
   enabled: true
