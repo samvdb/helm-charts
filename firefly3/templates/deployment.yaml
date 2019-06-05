@@ -1,0 +1,63 @@
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name:  {{ include "firefly3.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ include "firefly3.name" . }}
+    app.kubernetes.io/name: {{ include "firefly3.name" . }}
+    helm.sh/chart: {{ include "firefly3.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "firefly3.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "firefly3.fullname" . }}
+    spec:
+      containers:
+        - name: {{ template "firefly3.fullname" . }}
+          image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy | quote }}
+          env:
+            - name: FF_APP_ENV
+              value: {{ default "local" .Values.firefly.env| quote }}
+            - name: FF_APP_KEY
+              value: {{ default "changeme" .Values.firefly.key | quote }}
+            - name: FF_DB_HOST
+              value: {{ default "mysql" .Values.firefly.db_host| quote }}
+            - name: FF_DB_NAME
+              value: {{ default "firefly_db" .Values.firefly.db_name | quote }}
+            - name: FF_DB_USER
+              value: {{ default "firefly" .Values.firefly.db_user | quote }}
+            - name: FF_DB_PASSWORD
+              value: {{ default "firefly" .Values.firefly.db_password | quote }}
+          livenessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          readinessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          ports:
+            - name: http
+              containerPort: 80
+  {{- with .Values.nodeSelector }}
+nodeSelector:
+  {{ toYaml . | indent 8 }}
+  {{- end }}
+  {{- with .Values.affinity }}
+affinity:
+  {{ toYaml . | indent 8 }}
+  {{- end }}
+  {{- with .Values.tolerations }}
+tolerations:
+  {{ toYaml . | indent 8 }}
+  {{- end }}
