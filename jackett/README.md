@@ -1,11 +1,11 @@
-# jackett proxy server
+# jackett televsion show download client
 
 This is a helm chart for [jackett](https://github.com/jackett/jackett/) leveraging the [Linuxserver.io image](https://hub.docker.com/r/linuxserver/jackett/)
 
 ## TL;DR;
 
 ```shell
-$ helm repo add billimek https://billimek.github.io/helm-repo
+$ helm repo add billimek https://billimek.com/billimek-charts/
 $ helm install billimek/jackett
 ```
 
@@ -34,13 +34,14 @@ The following tables lists the configurable parameters of the Sentry chart and t
 | Parameter                  | Description                         | Default                                                 |
 |----------------------------|-------------------------------------|---------------------------------------------------------|
 | `image.repository`         | Image repository | `linuxserver/jackett` |
-| `image.tag`                | Image tag. Possible values listed [here](https://hub.docker.com/r/linuxserver/jackett/tags/).| `162`|
+| `image.tag`                | Image tag. Possible values listed [here](https://hub.docker.com/r/linuxserver/jackett/tags/).| `amd64-2.0.0.5321-ls62`|
 | `image.pullPolicy`         | Image pull policy | `IfNotPresent` |
+| `strategyType`             | Specifies the strategy used to replace old Pods by new ones | `Recreate` |
 | `timezone`                 | Timezone the jackett instance should run as, e.g. 'America/New_York' | `UTC` |
 | `puid`                     | process userID the jackett instance should run as | `1001` |
 | `pgid`                     | process groupID the jackett instance should run as | `1001` |
 | `Service.type`          | Kubernetes service type for the jackett GUI | `ClusterIP` |
-| `Service.port`          | Kubernetes port where the jackett GUI is exposed| `9117` |
+| `Service.port`          | Kubernetes port where the jackett GUI is exposed| `8989` |
 | `Service.annotations`   | Service annotations for the jackett GUI | `{}` |
 | `Service.labels`        | Custom labels | `{}` |
 | `Service.loadBalancerIP` | Loadbalance IP for the jackett GUI | `{}` |
@@ -56,6 +57,16 @@ The following tables lists the configurable parameters of the Sentry chart and t
 | `persistence.config.existingClaim`| Use an existing PVC to persist data | `nil` |
 | `persistence.config.storageClass` | Type of persistent volume claim | `-` |
 | `persistence.config.accessMode`  | Persistence access mode | `ReadWriteOnce` |
+| `persistence.downloads.enabled`      | Use persistent volume for downloads | `true` |
+| `persistence.downloads.size`         | Size of persistent volume claim | `10Gi` |
+| `persistence.downloads.existingClaim`| Use an existing PVC to persist data | `nil` |
+| `persistence.downloads.storageClass` | Type of persistent volume claim | `-` |
+| `persistence.downloads.accessMode`  | Persistence access mode | `ReadWriteOnce` |
+| `persistence.tv.enabled`      | Use persistent volume for tv show persistence | `true` |
+| `persistence.tv.size`         | Size of persistent volume claim | `10Gi` |
+| `persistence.tv.existingClaim`| Use an existing PVC to persist data | `nil` |
+| `persistence.tv.storageClass` | Type of persistent volume claim | `-` |
+| `persistence.tv.accessMode`  | Persistence access mode | `ReadWriteOnce` |
 | `persistence.extraExistingClaimMounts`  | Optionally add multiple existing claims | `[]` |
 | `resources`                | CPU/Memory resource requests/limits | `{}` |
 | `nodeSelector`             | Node labels for pod assignment | `{}` |
@@ -76,4 +87,4 @@ Alternatively, a YAML file that specifies the values for the above parameters ca
 helm install --name my-release -f values.yaml stable/jackett
 ```
 
-Read through the [values.yaml](values.yaml) file. It has several commented out suggested values.
+Read through the [values.yaml](https://github.com/billimek/billimek-charts/blob/master/jackett/values.yaml) file. It has several commented out suggested values.

@@ -3,10 +3,10 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ template "indexer.fullname" . }}-config
+  name: {{ template "jackett.fullname" . }}-config
   labels:
-    app.kubernetes.io/name: {{ include "indexer.name" . }}
-    helm.sh/chart: {{ include "indexer.chart" . }}
+    app.kubernetes.io/name: {{ include "jackett.name" . }}
+    helm.sh/chart: {{ include "jackett.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
@@ -15,11 +15,11 @@ spec:
   resources:
     requests:
       storage: {{ .Values.persistence.config.size | quote }}
-  {{- if .Values.persistence.config.storageClass }}
-  {{- if (eq "-" .Values.persistence.config.storageClass) }}
-storageClassName: ""
-  {{- else }}
-storageClassName: "{{ .Values.persistence.config.storageClass }}"
-  {{- end }}
-  {{- end }}
-  {{- end -}}
+{{- if .Values.persistence.config.storageClass }}
+{{- if (eq "-" .Values.persistence.config.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.persistence.config.storageClass }}"
+{{- end }}
+{{- end }}
+{{- end -}}
