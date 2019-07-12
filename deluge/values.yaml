@@ -17,6 +17,9 @@ umask: 022
 puid: 1001
 pgid: 1001
 
+# Additational pod annotations
+podAnnotations: {}
+
 guiService:
   type: ClusterIP
   port: 8112
