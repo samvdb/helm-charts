@@ -52,11 +52,6 @@ spec:
               {{- if .Values.persistence.downloads.subPath }}
               subPath: {{ .Values.persistence.downloads.subPath }}
               {{ end }}
-            {{- range .Values.persistence.extraExistingClaimMounts }}
-            - name: {{ .name }}
-              mountPath: {{ .mountPath }}
-              readOnly: {{ .readOnly }}
-            {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
       volumes:
