@@ -62,13 +62,13 @@ spec:
       {{- else }}
         emptyDir: {}
       {{- end }}
-    - name: downloads
-      {{- if .Values.persistence.downloads.enabled }}
-      persistentVolumeClaim:
-        claimName: {{ if .Values.persistence.downloads.existingClaim }}{{ .Values.persistence.downloads.existingClaim }}{{- else }}{{ template "utorrent.fullname" . }}-downloads{{- end }}
-      {{- else }}
-      emptyDir: {}
-      {{ end }}
+      - name: downloads
+        {{- if .Values.persistence.downloads.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ if .Values.persistence.downloads.existingClaim }}{{ .Values.persistence.downloads.existingClaim }}{{- else }}{{ template "utorrent.fullname" . }}-downloads{{- end }}
+        {{- else }}
+        emptyDir: {}
+        {{ end }}
       {{- range .Values.persistence.extraExistingClaimMounts }}
       - name: {{ .name }}
         persistentVolumeClaim:
