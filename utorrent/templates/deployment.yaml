@@ -49,9 +49,9 @@ spec:
               name: config
             - mountPath: /utorrent/data
               name: downloads
-            {{- if .Values.persistence.downloads.subPath }}
-            subPath: {{ .Values.persistence.downloads.subPath }}
-            {{ end }}
+              {{- if .Values.persistence.downloads.subPath }}
+              subPath: {{ .Values.persistence.downloads.subPath }}
+              {{ end }}
             {{- range .Values.persistence.extraExistingClaimMounts }}
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
