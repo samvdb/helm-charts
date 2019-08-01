@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "utorrent.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "utorrent.name" . }}
+    helm.sh/chart: {{ include "utorrent.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: 1
+  strategy:
+    type: {{ .Values.strategyType }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "utorrent.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "utorrent.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+#          livenessProbe:
+#            httpGet:
+#              path: /
+#              port: http
+#          readinessProbe:
+#            httpGet:
+#              path: /
+#              port: http
+          env:
+            - name: TZ
+              value: "{{ .Values.timezone }}"
+            - name: HOST_UID
+              value: "{{ .Values.puid }}"
+            - name: HOST_GID
+              value: "{{ .Values.pgid }}"
+          volumeMounts:
+            - mountPath: /utorrent/settings
+              name: config
+            - mountPath: /utorrent/data
+              name: downloads
+            {{- if .Values.persistence.downloads.subPath }}
+            subPath: {{ .Values.persistence.downloads.subPath }}
+            {{ end }}
+            {{- range .Values.persistence.extraExistingClaimMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+              readOnly: {{ .readOnly }}
+            {{- end }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+      volumes:
+      - name: config
+      {{- if .Values.persistence.config.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ if .Values.persistence.config.existingClaim }}{{ .Values.persistence.config.existingClaim }}{{- else }}{{ template "utorrent.fullname" . }}-config{{- end }}
+      {{- else }}
+        emptyDir: {}
+      {{- end }}
+    - name: downloads
+      {{- if .Values.persistence.downloads.enabled }}
+      persistentVolumeClaim:
+        claimName: {{ if .Values.persistence.downloads.existingClaim }}{{ .Values.persistence.downloads.existingClaim }}{{- else }}{{ template "deluge.fullname" . }}-downloads{{- end }}
+      {{- else }}
+      emptyDir: {}
+      {{ end }}
+      {{- range .Values.persistence.extraExistingClaimMounts }}
+      - name: {{ .name }}
+        persistentVolumeClaim:
+          claimName: {{ .existingClaim }}
+      {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
