@@ -29,6 +29,9 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+#            - name: dht
+#              containerPort: 6881
+#              protocol: UDP
 #          livenessProbe:
 #            httpGet:
 #              path: /
