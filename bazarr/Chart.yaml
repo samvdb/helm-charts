@@ -1,0 +1,8 @@
+apiVersion: v1
+appVersion: "latest"
+description: Bazarr is a companion application to Sonarr and Radarr. It can manage and download subtitles based on your requirements. You define your preferences by TV show or movie and Bazarr takes care of everything for you.
+name: bazarr
+version: 0.1.1
+maintainers:
+  - name: Gavin Mogan
+    email: helm@gavinmogan.com
