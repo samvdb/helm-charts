@@ -55,6 +55,11 @@ spec:
             - name: {{ regexReplaceAllLiteral "\\W+" . "-" | lower | trimAll "-" | quote }}
               mountPath: {{ . | quote }}
             {{- end }}
+            {{- range .Values.persistence.extraExistingClaimMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+              readOnly: {{ .readOnly }}
+            {{- end }}
       volumes:
         - name: config
         {{- if .Values.persistence.enabled }}
@@ -67,6 +72,11 @@ spec:
         - name: {{ regexReplaceAllLiteral "\\W+" . "-" | lower | trimAll "-" | quote }}
           hostPath:
             path: {{ . | quote }}
+        {{- end }}
+        {{- range .Values.persistence.extraExistingClaimMounts }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .existingClaim }}
         {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
